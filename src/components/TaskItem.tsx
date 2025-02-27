@@ -14,7 +14,7 @@ const TaskItem = ({ task, onDelete, onToggle }: any) => {
 
       <button
         onClick={() => onDelete(task.id)}
-        className="bg-[red] text-white px-2 py-1"
+        className="bg-[red] text-white px-2 py-1 rounded"
       >
         Delete
       </button>

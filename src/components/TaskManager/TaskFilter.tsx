@@ -13,7 +13,7 @@ const TaskFilter = () => {
         <button
           key={filter}
           onClick={() => setFilter(filter)}
-          className={`text-gray-700 w-1/2 p-1 ${
+          className={`text-gray-700 w-1/2 p-1 duration-200 ${
             currentFilter === filter ? "font-bold bg-slate-300" : "bg-slate-200"
           }`}
         >

@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter } from "../types/filter";
+import { Filter } from "../../types/filter";
 
 type Props = {
   currentFilter: Filter;

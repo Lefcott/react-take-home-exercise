@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Task } from "../types/task";
-import { Filter } from "../types/filter";
+import { Task } from "../../types/task";
+import { Filter } from "../../types/filter";
+import TaskList from "./TaskList";
 import TaskForm from "./TaskForm";
 import TaskFilter from "./TaskFilter";
-import TaskList from "./TaskList";
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>([

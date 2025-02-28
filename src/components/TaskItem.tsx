@@ -13,7 +13,7 @@ const TaskItem = ({ task, onDelete, onToggle }: Props) => {
       <span
         onClick={() => onToggle(task.id)}
         className={`cursor-pointer ${
-          task.completed ? "text-black" : "line-through text-green-500"
+          task.completed ? "line-through text-green-500" : "text-black"
         }`}
       >
         {task.title}

@@ -13,7 +13,7 @@ const TaskItem = ({ task }: { task: Task }) => {
       <li className="flex items-center justify-between border-b py-2">
         <span
           onClick={() => toggleTaskCompletion(task.id)}
-          className={`cursor-pointer select-none ${
+          className={`cursor-pointer select-none duration-200 active:scale-110 ${
             task.completed ? "line-through text-green-500" : "text-black"
           }`}
         >

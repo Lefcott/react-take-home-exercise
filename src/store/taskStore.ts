@@ -5,12 +5,10 @@ import { Task } from "../types/task";
 type TaskStore = {
   tasks: Task[];
   currentFilter: Filter;
-  newTaskTitle: string;
-  addTask: () => void;
+  addTask: (title: string) => void;
   deleteTask: (id: number) => void;
   toggleTaskCompletion: (id: number) => void;
   setFilter: (filter: Filter) => void;
-  setNewTaskTitle: (title: string) => void;
 };
 
 const useTaskStore = create<TaskStore>()((set) => ({
@@ -19,22 +17,13 @@ const useTaskStore = create<TaskStore>()((set) => ({
     { id: 2, title: "Clean the house", completed: true },
   ],
   currentFilter: "all",
-  newTaskTitle: "",
-  addTask: () =>
-    set((state) => {
-      if (state.newTaskTitle.trim() === "") return state;
-      return {
-        newTaskTitle: "",
-        tasks: [
-          ...state.tasks,
-          {
-            id: state.tasks.length + 1,
-            title: state.newTaskTitle,
-            completed: false,
-          },
-        ],
-      };
-    }),
+  addTask: (title: string) =>
+    set((state) => ({
+      tasks: [
+        ...state.tasks,
+        { id: state.tasks.length + 1, title, completed: false },
+      ],
+    })),
   deleteTask: (id: number) =>
     set((state) => ({ tasks: state.tasks.filter((task) => task.id !== id) })),
   toggleTaskCompletion: (id: number) =>
@@ -44,7 +33,6 @@ const useTaskStore = create<TaskStore>()((set) => ({
       ),
     })),
   setFilter: (filter: Filter) => set(() => ({ currentFilter: filter })),
-  setNewTaskTitle: (title: string) => set(() => ({ newTaskTitle: title })),
 }));
 
 export default useTaskStore;

@@ -27,6 +27,7 @@ const useTaskStore = create<TaskStore>()((set) => ({
         { id: state.tasks.length + 1, title, completed: false },
       ];
       localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
       return {
         tasks: updatedTasks,
       };

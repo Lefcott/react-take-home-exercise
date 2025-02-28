@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-
-import TaskItem from "./TaskItem";
 import { Task } from "../types/task";
-
-type Filter = "all" | "completed" | "pending";
+import { Filter } from "../types/filter";
+import TaskForm from "./TaskForm";
+import TaskFilter from "./TaskFilter";
+import TaskList from "./TaskList";
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>([
@@ -11,7 +11,7 @@ const TaskManager = () => {
     { id: 2, title: "Clean the house", completed: true },
   ]);
   const [filter, setFilter] = useState<Filter>("all");
-  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === "completed") return task.completed === true;
@@ -44,42 +44,17 @@ const TaskManager = () => {
 
   return (
     <div className="container mx-auto bg-white p-4 rounded shadow">
-      <form onSubmit={handleAddTask} className="mb-4 flex">
-        <input
-          type="text"
-          placeholder="New task..."
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-          className="flex-grow border rounded-l py-2 px-3"
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 rounded-r">
-          Add
-        </button>
-      </form>
-      <div className="flex justify-around mb-4">
-        <button onClick={() => setFilter("all")} className="text-gray-700">
-          All
-        </button>
-        <button
-          onClick={() => setFilter("completed")}
-          className="text-gray-700"
-        >
-          Completed
-        </button>
-        <button onClick={() => setFilter("pending")} className="text-gray-700">
-          Pending
-        </button>
-      </div>
-      <ul>
-        {filteredTasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onDelete={handleDeleteTask}
-            onToggle={toggleTaskCompletion}
-          />
-        ))}
-      </ul>
+      <TaskForm
+        newTaskTitle={newTaskTitle}
+        setNewTaskTitle={setNewTaskTitle}
+        addTask={handleAddTask}
+      />
+      <TaskFilter currentFilter={filter} setFilter={setFilter} />
+      <TaskList
+        tasks={filteredTasks}
+        onDelete={handleDeleteTask}
+        onToggle={toggleTaskCompletion}
+      />
     </div>
   );
 };

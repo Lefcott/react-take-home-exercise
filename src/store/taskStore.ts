@@ -5,10 +5,12 @@ import { Task } from "../types/task";
 type TaskStore = {
   tasks: Task[];
   currentFilter: Filter;
+  deletingTask: Task | null;
   addTask: (title: string) => void;
   deleteTask: (id: number) => void;
   toggleTaskCompletion: (id: number) => void;
   setFilter: (filter: Filter) => void;
+  setDeletingTask: (id: Task | null) => void;
 };
 
 const useTaskStore = create<TaskStore>()((set) => ({
@@ -17,7 +19,8 @@ const useTaskStore = create<TaskStore>()((set) => ({
     { id: 2, title: "Clean the house", completed: true },
   ],
   currentFilter: "all",
-  addTask: (title: string) =>
+  deletingTask: null,
+  addTask: (title) =>
     set((state) => {
       const updatedTasks = [
         ...state.tasks,
@@ -28,13 +31,13 @@ const useTaskStore = create<TaskStore>()((set) => ({
         tasks: updatedTasks,
       };
     }),
-  deleteTask: (id: number) =>
+  deleteTask: (id) =>
     set((state) => {
       const updatedTasks = state.tasks.filter((task) => task.id !== id);
       localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      return { tasks: updatedTasks };
+      return { tasks: updatedTasks, deletingTask: null };
     }),
-  toggleTaskCompletion: (id: number) =>
+  toggleTaskCompletion: (id) =>
     set((state) => {
       const updatedTasks = state.tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -44,7 +47,8 @@ const useTaskStore = create<TaskStore>()((set) => ({
         tasks: updatedTasks,
       };
     }),
-  setFilter: (filter: Filter) => set(() => ({ currentFilter: filter })),
+  setFilter: (filter) => set(() => ({ currentFilter: filter })),
+  setDeletingTask: (task) => set(() => ({ deletingTask: task })),
 }));
 
 export default useTaskStore;

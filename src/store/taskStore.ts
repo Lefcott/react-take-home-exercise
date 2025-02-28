@@ -21,17 +21,20 @@ const useTaskStore = create<TaskStore>()((set) => ({
   currentFilter: "all",
   newTaskTitle: "",
   addTask: () =>
-    set((state) => ({
-      newTaskTitle: "",
-      tasks: [
-        ...state.tasks,
-        {
-          id: state.tasks.length + 1,
-          title: state.newTaskTitle,
-          completed: false,
-        },
-      ],
-    })),
+    set((state) => {
+      if (state.newTaskTitle.trim() === "") return state;
+      return {
+        newTaskTitle: "",
+        tasks: [
+          ...state.tasks,
+          {
+            id: state.tasks.length + 1,
+            title: state.newTaskTitle,
+            completed: false,
+          },
+        ],
+      };
+    }),
   deleteTask: (id: number) =>
     set((state) => ({ tasks: state.tasks.filter((task) => task.id !== id) })),
   toggleTaskCompletion: (id: number) =>

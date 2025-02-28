@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 
 import TaskItem from "./TaskItem";
+import { Task } from "../types/task";
+
+type Filter = "all" | "completed" | "pending";
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState<any[]>([
+  const [tasks, setTasks] = useState<Task[]>([
     { id: 1, title: "Buy groceries", completed: false },
     { id: 2, title: "Clean the house", completed: true },
   ]);
-  const [filter, setFilter] = useState("all");
-  const [newTask, setNewTask] = useState<string>();
+  const [filter, setFilter] = useState<Filter>("all");
+  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === "completed") return task.completed === true;
@@ -18,14 +21,14 @@ const TaskManager = () => {
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTask!.trim() === "") return;
-    const newTaskObj = {
+    if (newTaskTitle.trim() === "") return;
+    const newTask: Task = {
       id: tasks.length + 1,
-      name: newTask,
+      title: newTaskTitle,
       completed: false,
     };
-    setTasks([...tasks, newTaskObj]);
-    setNewTask("");
+    setTasks([...tasks, newTask]);
+    setNewTaskTitle("");
   };
 
   const handleDeleteTask = (id: number) => {
@@ -33,9 +36,10 @@ const TaskManager = () => {
   };
 
   const toggleTaskCompletion = (id: number) => {
-    const task = tasks.find((task) => task.id === id);
-
-    task.isCompleted = !task.isCompleted;
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
   };
 
   return (
@@ -44,8 +48,8 @@ const TaskManager = () => {
         <input
           type="text"
           placeholder="New task..."
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          value={newTaskTitle}
+          onChange={(e) => setNewTaskTitle(e.target.value)}
           className="flex-grow border rounded-l py-2 px-3"
         />
         <button type="submit" className="bg-blue-500 text-white px-4 rounded-r">

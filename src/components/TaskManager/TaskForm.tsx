@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import useTaskStore from "../../store/taskStore";
 
 const TaskForm = () => {
+  const tasks = useTaskStore((state) => state.tasks);
   const addTask = useTaskStore((state) => state.addTask);
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (newTaskTitle.trim() === "") return;
+
+    const existingTask = tasks.find((task) => task.title === newTaskTitle);
+    if (existingTask) return;
+
     addTask(newTaskTitle);
     setNewTaskTitle("");
   };

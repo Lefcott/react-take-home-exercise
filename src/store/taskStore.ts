@@ -12,26 +12,38 @@ type TaskStore = {
 };
 
 const useTaskStore = create<TaskStore>()((set) => ({
-  tasks: [
+  tasks: JSON.parse(localStorage.getItem("tasks") || "null") || [
     { id: 1, title: "Buy groceries", completed: false },
     { id: 2, title: "Clean the house", completed: true },
   ],
   currentFilter: "all",
   addTask: (title: string) =>
-    set((state) => ({
-      tasks: [
+    set((state) => {
+      const updatedTasks = [
         ...state.tasks,
         { id: state.tasks.length + 1, title, completed: false },
-      ],
-    })),
+      ];
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      return {
+        tasks: updatedTasks,
+      };
+    }),
   deleteTask: (id: number) =>
-    set((state) => ({ tasks: state.tasks.filter((task) => task.id !== id) })),
+    set((state) => {
+      const updatedTasks = state.tasks.filter((task) => task.id !== id);
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      return { tasks: updatedTasks };
+    }),
   toggleTaskCompletion: (id: number) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
+    set((state) => {
+      const updatedTasks = state.tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
-      ),
-    })),
+      );
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      return {
+        tasks: updatedTasks,
+      };
+    }),
   setFilter: (filter: Filter) => set(() => ({ currentFilter: filter })),
 }));
 

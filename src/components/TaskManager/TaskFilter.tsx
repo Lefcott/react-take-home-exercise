@@ -3,7 +3,8 @@ import { Filter } from "../../types/filter";
 import useTaskStore from "../../store/taskStore";
 
 const TaskFilter = () => {
-  const { currentFilter, setFilter } = useTaskStore();
+  const currentFilter = useTaskStore((state) => state.currentFilter);
+  const setFilter = useTaskStore((state) => state.setFilter);
   const filters: Filter[] = ["all", "completed", "pending"];
 
   return (

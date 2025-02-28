@@ -1,24 +1,24 @@
 import React from "react";
-import { Task } from "../../../types/task";
 import TaskItem from "./TaskItem";
+import useTaskStore from "../../../store/taskStore";
 
-type Props = {
-  tasks: Task[];
-  onDelete: (id: number) => void;
-  onToggle: (id: number) => void;
+const TaskList = () => {
+  const tasks = useTaskStore((state) => state.tasks);
+  const currentFilter = useTaskStore((state) => state.currentFilter);
+
+  const filteredTasks = tasks.filter((task) => {
+    if (currentFilter === "completed") return task.completed === true;
+    if (currentFilter === "pending") return task.completed === false;
+    return true;
+  });
+
+  return (
+    <ul>
+      {filteredTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
+      ))}
+    </ul>
+  );
 };
-
-const TaskList = ({ tasks, onDelete, onToggle }: Props) => (
-  <ul>
-    {tasks.map((task) => (
-      <TaskItem
-        key={task.id}
-        task={task}
-        onDelete={onDelete}
-        onToggle={onToggle}
-      />
-    ))}
-  </ul>
-);
 
 export default TaskList;

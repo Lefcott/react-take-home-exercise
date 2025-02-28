@@ -1,24 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import useTaskStore from "../../store/taskStore";
 
-type Props = {
-  newTaskTitle: string;
-  setNewTaskTitle: (title: string) => void;
-  addTask: (e: React.FormEvent) => void;
+const TaskForm = () => {
+  const addTask = useTaskStore((state) => state.addTask);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+
+  const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (newTaskTitle.trim() === "") return;
+    addTask(newTaskTitle);
+    setNewTaskTitle("");
+  };
+
+  return (
+    <form onSubmit={handleAddTask} className="mb-4 flex">
+      <input
+        type="text"
+        placeholder="New task..."
+        value={newTaskTitle}
+        onChange={(e) => setNewTaskTitle(e.target.value)}
+        className="flex-grow border rounded-l py-2 px-3"
+      />
+      <button type="submit" className="bg-blue-500 text-white px-4 rounded-r">
+        Add
+      </button>
+    </form>
+  );
 };
-
-const TaskForm = ({ newTaskTitle, setNewTaskTitle, addTask }: Props) => (
-  <form onSubmit={addTask} className="mb-4 flex">
-    <input
-      type="text"
-      placeholder="New task..."
-      value={newTaskTitle}
-      onChange={(e) => setNewTaskTitle(e.target.value)}
-      className="flex-grow border rounded-l py-2 px-3"
-    />
-    <button type="submit" className="bg-blue-500 text-white px-4 rounded-r">
-      Add
-    </button>
-  </form>
-);
 
 export default TaskForm;

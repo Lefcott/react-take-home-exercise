@@ -1,17 +1,21 @@
 import React from "react";
 import { Task } from "../../../types/task";
+import useTaskStore from "../../../store/taskStore";
 
 type Props = {
   task: Task;
-  onDelete: (id: number) => void;
-  onToggle: (id: number) => void;
 };
 
-const TaskItem = ({ task, onDelete, onToggle }: Props) => {
+const TaskItem = ({ task }: Props) => {
+  const toggleTaskCompletion = useTaskStore(
+    (state) => state.toggleTaskCompletion
+  );
+  const deleteTask = useTaskStore((state) => state.deleteTask);
+
   return (
     <li className="flex items-center justify-between border-b py-2">
       <span
-        onClick={() => onToggle(task.id)}
+        onClick={() => toggleTaskCompletion(task.id)}
         className={`cursor-pointer ${
           task.completed ? "line-through text-green-500" : "text-black"
         }`}
@@ -20,7 +24,7 @@ const TaskItem = ({ task, onDelete, onToggle }: Props) => {
       </span>
 
       <button
-        onClick={() => onDelete(task.id)}
+        onClick={() => deleteTask(task.id)}
         className="bg-[red] text-white px-2 py-1 rounded"
       >
         Delete

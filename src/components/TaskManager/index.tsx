@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { Task } from "../../types/task";
-import { Filter } from "../../types/filter";
 import TaskList from "./TaskList";
 import TaskForm from "./TaskForm";
 import TaskFilter from "./TaskFilter";
+import useTaskStore from "../../store/taskStore";
 
 const TaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>([
     { id: 1, title: "Buy groceries", completed: false },
     { id: 2, title: "Clean the house", completed: true },
   ]);
-  const [filter, setFilter] = useState<Filter>("all");
+  const currentFilter = useTaskStore((state) => state.currentFilter);
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const filteredTasks = tasks.filter((task) => {
-    if (filter === "completed") return task.completed === true;
-    if (filter === "pending") return task.completed === false;
+    if (currentFilter === "completed") return task.completed === true;
+    if (currentFilter === "pending") return task.completed === false;
     return true;
   });
 
@@ -49,7 +49,7 @@ const TaskManager = () => {
         setNewTaskTitle={setNewTaskTitle}
         addTask={handleAddTask}
       />
-      <TaskFilter currentFilter={filter} setFilter={setFilter} />
+      <TaskFilter />
       <TaskList
         tasks={filteredTasks}
         onDelete={handleDeleteTask}

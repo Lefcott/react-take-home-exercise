@@ -1,12 +1,9 @@
 import React from "react";
 import { Filter } from "../../types/filter";
+import useTaskStore from "../../store/taskStore";
 
-type Props = {
-  currentFilter: Filter;
-  setFilter: (currentFilter: Filter) => void;
-};
-
-const TaskFilter = ({ currentFilter, setFilter }: Props) => {
+const TaskFilter = () => {
+  const { currentFilter, setFilter } = useTaskStore();
   const filters: Filter[] = ["all", "completed", "pending"];
 
   return (

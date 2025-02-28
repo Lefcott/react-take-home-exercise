@@ -13,8 +13,8 @@ const TaskFilter = () => {
         <button
           key={filter}
           onClick={() => setFilter(filter)}
-          className={`text-gray-700 ${
-            currentFilter === filter ? "font-bold" : ""
+          className={`text-gray-700 w-1/2 p-1 ${
+            currentFilter === filter ? "font-bold bg-slate-300" : "bg-slate-200"
           }`}
         >
           {filter.charAt(0).toUpperCase() + filter.slice(1)}
